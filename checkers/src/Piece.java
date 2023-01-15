@@ -1,54 +1,81 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author vsatchi
+ */
 public class Piece {
-    public String position;
-    public int type;
-
-    public Piece(String position, int type){
-        this.position = position;
-        this.type = type;
-    } 
-
-    public String getPosition(){
-        return this.position;
+    int type;
+    boolean promoted = false;
+    int xpos;
+    int ypos;
+    
+    public Piece(int type, int xpos, int ypos){
+       this.type = type;
+       this.xpos = xpos;
+       this. ypos = ypos;
     }
-
-    public Boolean setPosition(String newPos){
-        if (cBoard.checkFree(newPos, this.type)){
-
-        }
-        return true;
+    
+    public int getXPos(){
+        return xpos;
     }
-
-    public int getType(){
-        return this.type;
+    
+    public int getYPos(){
+        return ypos;
     }
-
-    public void setType(int type){
-        this.type = type;
+    
+    public void setXPos(int xpos){
+        this.xpos = xpos;
     }
-
-    public int letterVal(char c){
-        int val = (int) c;
-        if (val > 72)
-            val -= 96;
-        else
-            val -= 71;
-        return val;
+    
+    public void setYPos(int ypos){
+        this.ypos = ypos;
     }
-
-    public Boolean move(String newPos){
-        //What to do in order:
-            //1. Verify that newPos is within 1 space of p.getPosition()
-            //2. Is it vertical or diagonal?
-                //2.a. Vertical:
-                        // Check if space is FREE
-                //2.b. Diagonal:
-                        // Check if space is OCCUPIED by OTHER COLOUR
-            //3. Then u can just place the thing with the setPos method
-            int Hdiff = letterVal(getPosition().charAt(0)) - letterVal(newPos.charAt(0));
-            int Vdiff = (int) getPosition().charAt(1) - (int) newPos.charAt(1); 
-
-            
-
-        return true;   
+    
+    public boolean getPromoted(){
+        return promoted;
+    }
+    
+    public void setPromoted(boolean promoted){
+        this.promoted = promoted;
+    }
+    
+    public int[] getDistance(int xcoords, int ycoords){
+        int dx = xcoords - xpos;
+        int dy = ycoords - ypos;
+        return new int[]{dx,dy};
+    }
+    
+    public int getYDirection(int ycoords){
+        if(ycoords > ypos) return 1;
+        else return -1;
+    }
+    
+    public void movePiece(int xcoords, int ycoords){
+        //check if move is valid:
+        //  should only be in black square
+        //  in valid direction
+        //      promoted = any direc
+        //      not promoted = depends on whose turn it is
+        //  distance is correct
+        //      if killing
+        //          check if opposing piece exists between dest and pos
+        //          delete opposing piece from board
+        //      not killing
+        //          dest should be free spot
+        //          dest should be within (1, 1) from pos 
+        
+        //if move is succesful, do the move
+        //  if killing happened:
+        //      delete item from array or add "dead/alive" attribute to pieces
+        //  if killing happen OR no happen:
+        //      change position value 
+        //      change visual board
+        
+        
     }
 }
