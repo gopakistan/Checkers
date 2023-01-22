@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class cBoard {
     private static cBoard instance;
     public static ArrayList<Piece> pieces = new ArrayList<>();
-    public static int turn = 0;
-    public static int[][] display = new int[8][8];
+    public static int turn = 1;
+    public static int[][] display = new int[9][9];
     
     private cBoard (){ }
     
@@ -26,48 +26,96 @@ public class cBoard {
     return instance;
     }
     
-    public void createBoard(){
-        int spotx = 1;
-        int spoty = 1;
-        
-        for(int i = 0; i < 12; i++){
-            pieces.add(new Piece(1, spotx, spoty));
-            pieces.add(new Piece(-1, spotx, 9 - spoty));
-            display[spotx-1][spoty-1] = 1;
-            display[spotx-1][9-spoty-1] = -1;
-            spotx += 2;
-            
-            if(i == 3) spotx += 1;
-            if(i == 7) spotx -= 1;
-            
-            if((i+1) % 4 == 0){
-                spoty += 1;
-                spotx %= 8;
+    public Piece getPiece(int x, int y){
+        for(Piece p: pieces){
+            System.out.println(p.getXPos() + " != " + x + ";" + p.getYPos() + " != " + y);
+            if(p.getXPos() == x-1 && p.getYPos() == y-1){
+                System.out.println("\tPIECE FOUND: " + p.getXPos() + "," + p.getYPos());
+                return p;
             }
-            
         }
+        return null;
+    }
+    
+    public void removePiece(Piece p){
+        pieces.remove(p);
+    }
+    
+    
+    public void createBoard(){
         
-        displayPieces();
-        displayBoard();
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if((i+j)%2 == 1) continue;
+                if(i < 3){
+                    display[i][j] = 1;
+                    pieces.add(new Piece(1, j, i));
+                }
+                else if(i > 4){
+                    display[i][j] = -1;
+                    pieces.add(new Piece(-1, j, i));
+                }
+                //System.out.print(i + "" + j);
+                //System.out.print(":" + display[i][j] + " ");
+            }
+            //System.out.println();
+        }
     }
     
     public void displayBoard(){
-        int i, j = 0;
-        for(i = 0; i < 8; i++){
-            if(i == 0) System.out.println("_____________");
-            
-            //8| B  B  B  B  
-            //_____________
-            for(j = 0; j < 8; j++){
-                if(j == 0) System.out.print(8-i + "| ");
-                if (display[j][i] == 1) System.out.printf("%1s", "B");
-                else if (display[j][i] == -1) System.out.printf("%-1s", "R");
-                else System.out.print(" x ");
-            }
-            System.out.println();
+        int x = 0;
+        System.out.print(" \t|");
+        for(int i = 0; i < 8; i++) System.out.print((char) (65+i) + "    ");
+        System.out.println();
+        System.out.println(" \t|-----------------------------------------");
+        
+        for(int j = 0; j < 8; j++){
+            for(int i = 0; i < 8; i++){
+                for(int k = 0; k < 3; k++){
+                    if(i == j){
+                        if(k == 0){
+                            System.out.print(i+1 +"\t|");
+                        }
+                        else System.out.print(" \t|");
+                        if(k%2 == 0){
+                            if(i%2 == 0) System.out.println("/////     /////     /////     /////     ");
+                            if(i%2 == 1) System.out.println("     /////     /////     /////     /////");
+                        }
+                        else{
+                            if(i%2 == 1) System.out.print("     ");
+                            for(x = 0;x < 4; x++){
+                                System.out.print("//");
+                                switch (display[i][j]) {
+                                    case 1:
+                                        System.out.print("B");
+                                        break;
+                                    case -1:
+                                        System.out.print("R");
+                                        break;
+                                    default:
+                                        System.out.print("/");
+                                        break;
+                                }
+                                System.out.print("//     ");
+                            }
+                            System.out.println();
+                        }
+                        //if(k == 2) System.out.println("" + i + " " + " " + j + " " + " " + k + " " + x);
+                    }
+                }
+            }   
         }
-        System.out.println("_____________");
-        System.out.println("   A B C D E F G H");
+        // 	|     /////     /////     /////     /////
+        //      -----------------------------------------
+        //       A    B    C    D    E
+//        System.out.println(" \t|-----------------------------------------");
+//        System.out.print(" \t|");
+//        for(int i = 0; i < 8; i++) System.out.print((char) (65+i) + "    ");
+//        System.out.println();
+        
+    }
+    
+    public void displayCharacter(){
         
     }
     
@@ -80,6 +128,7 @@ public class cBoard {
                 if(i%4 == 0) System.out.println();
             }
         }
+        System.out.println();
         i = 0;
         for(Piece P: pieces){
             if(P.type == 1){
