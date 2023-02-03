@@ -28,12 +28,13 @@ public class cBoard {
     
     public Piece getPiece(int x, int y){
         for(Piece p: pieces){
-            System.out.println(p.getXPos() + " != " + x + ";" + p.getYPos() + " != " + y);
-            if(p.getXPos() == x-1 && p.getYPos() == y-1){
+            //System.out.println(p.getXPos() + " != " + x + ";" + p.getYPos() + " != " + y);
+            if(p.getXPos() == x && p.getYPos() == y){
                 System.out.println("\tPIECE FOUND: " + p.getXPos() + "," + p.getYPos());
                 return p;
             }
         }
+        System.out.println("no find: " + x + " " + y);
         return null;
     }
     
@@ -62,61 +63,83 @@ public class cBoard {
         }
     }
     
+    public void placePiece(int type, int x, int y){
+        //method exists purely for testing purposes
+        display[x][y] = type;
+        displayBoard();
+    }
+    
     public void displayBoard(){
-        int x = 0;
+        
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                switch (display[i][j]){
+                    case 1:
+                        System.out.print("B ");
+                        break;
+                    case -1:
+                        System.out.print("R ");
+                        break;
+                    default:
+                        System.out.print("/ ");
+                        break;
+                }
+            }
+            System.out.println();
+        }
+        
         System.out.print(" \t|");
         for(int i = 0; i < 8; i++) System.out.print((char) (65+i) + "    ");
         System.out.println();
         System.out.println(" \t|-----------------------------------------");
         
+        int i = 0;
+        
         for(int j = 0; j < 8; j++){
-            for(int i = 0; i < 8; i++){
-                for(int k = 0; k < 3; k++){
-                    if(i == j){
-                        if(k == 0){
-                            System.out.print(i+1 +"\t|");
-                        }
-                        else System.out.print(" \t|");
-                        if(k%2 == 0){
-                            if(i%2 == 0) System.out.println("/////     /////     /////     /////     ");
-                            if(i%2 == 1) System.out.println("     /////     /////     /////     /////");
-                        }
-                        else{
-                            if(i%2 == 1) System.out.print("     ");
-                            for(x = 0;x < 4; x++){
-                                System.out.print("//");
-                                switch (display[i][j]) {
-                                    case 1:
-                                        System.out.print("B");
-                                        break;
-                                    case -1:
-                                        System.out.print("R");
-                                        break;
-                                    default:
-                                        System.out.print("/");
-                                        break;
-                                }
-                                System.out.print("//     ");
-                            }
-                            System.out.println();
-                        }
-                        //if(k == 2) System.out.println("" + i + " " + " " + j + " " + " " + k + " " + x);
-                    }
+            for(int k = 0; k < 3; k++){
+                if(k == 0){
+                    System.out.print(j+1 +"\t|");
                 }
-            }   
+                else System.out.print(" \t|");
+                if(k != 1){
+                    if(j%2 == 0) System.out.println("/////     /////     /////     /////     ");
+                    if(j%2 == 1) System.out.println("     /////     /////     /////     /////");
+                }
+                else if(k==1){
+                    if(j%2 == 1) System.out.print("     ");
+                    for(i = 0; i < 8; i++){
+                        if((i+j)%2 == 0){
+                            switch (display[j][i]){
+                                case 1:
+                                    System.out.print("//B//     ");
+                                    break;
+                                case -1:
+                                    System.out.print("//R//     ");
+                                    break;
+                                default:
+                                    System.out.print("/////     ");
+                                    break;
+                            }
+                        }
+                        //System.out.print("     ");
+                    }
+                System.out.println();
+                }
+                else{
+                    if(j%2 == 0) System.out.println("/////     /////     /////     /////     ");
+                    if(j%2 == 1) System.out.println("     /////     /////     /////     /////");
+                }
+            //System.out.println();
+
+            }
         }
-        // 	|     /////     /////     /////     /////
+        //	|     /////     /////     /////     /////
         //      -----------------------------------------
         //       A    B    C    D    E
-//        System.out.println(" \t|-----------------------------------------");
-//        System.out.print(" \t|");
-//        for(int i = 0; i < 8; i++) System.out.print((char) (65+i) + "    ");
-//        System.out.println();
-        
-    }
-    
-    public void displayCharacter(){
-        
+        System.out.println(" \t|-----------------------------------------");
+        System.out.print(" \t|");
+        for(i = 0; i < 8; i++) System.out.print((char) (65+i) + "    ");
+        System.out.println();
     }
     
     public void displayPieces(){
