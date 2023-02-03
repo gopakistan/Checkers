@@ -36,6 +36,14 @@ public class Piece {
         this.ypos = ypos;
     }
     
+    public int getType(){
+        return this.type;
+    }
+    
+    public void setType(int type){
+        this.type = type;
+    }
+    
     public boolean getPromoted(){
         return promoted;
     }
@@ -45,8 +53,8 @@ public class Piece {
     }
     
     public int[] getDistance(int xcoords, int ycoords){
-        int dx = xcoords - xpos;
-        int dy = ycoords - ypos;
+        int dx = xcoords - this.xpos;
+        int dy = ycoords - this.ypos;
         return new int[]{dx,dy};
     }
     
@@ -55,13 +63,15 @@ public class Piece {
         else return -1;
     }
     
-    public void movePiece(int xcoords, int ycoords){
+    public boolean movePiece(int xcoords, int ycoords){
+        //RETURN TRUE IF PIECE IS KILLED, NOT MEANING SUCCESFUL MOVE
         //check if move is valid:
-        //  should only be in black square
-        //  in valid direction
-        //      promoted = any direc
-        //      not promoted = depends on whose turn it is
-        //  distance is correct
+        //  should only be in black square                  [DONE]
+        //  (piece to be moved).getType() == b.getTurn()    [DONE]
+        //  in valid direction                              [DONE]
+        //      promoted = any direc                        [DONE]
+        //      not promoted = depends on whose turn it is  [DONE]
+        //  distance is correct                             [DONE]
         //      if killing
         //          check if opposing piece exists between dest and pos
         //          delete opposing piece from board
@@ -76,6 +86,21 @@ public class Piece {
         //      change position value 
         //      change visual board
         
-        
+        cBoard b = cBoard.getInstance();
+        Piece toKill = b.getPiece(xcoords, ycoords);
+        if(toKill == null){
+            b.displayPieces();
+            System.out.println("no kill");
+            b.display[ypos][xpos] = 0;
+            this.setXPos(ycoords);
+            this.setYPos(xcoords);
+            //b.removePiece(toKill);
+            b.display[ycoords][xcoords] = type;
+            b.displayPieces();
+            return false;
+        }else{
+            System.out.println("kill NOT MADE YET");
+            return true;
+        }
     }
 }
